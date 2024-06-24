@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAVED</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="text-center">SAVED DATA</h5>
+            </div>
+            <div class="card-body table-responsive">
+                <h2>Search</h2>
+                <input class="form-control" id="myInput" type="text" placeholder="Buscar.."><br>
+                <h5>To Filter</h5>
+                <form id="filtro">
+                    <select class="form-select" aria-label="Default select example" id="myInput2">
+                        <option value="">Filter by Area</option>
+                        <option value="MCR">MCR</option>
+                    </select>
+                    <select class="form-select" aria-label="Default select example" id="myInput3">
+                        <option value="">Filter by Prob</option>
+                        <option value="BOOKED">BOOKED</option>
+                        <option value="CANCEL">CANCEL</option>
+                        <option value="HIGH">HIGH</option>
+                        <option value="LOST">LOST</option>
+                        <option value="MID">MID</option>
+                        <option value="LOW">LOW</option>
+                        <option value="SAFE">SAFE</option>
+                    </select>
+                    <select class="form-select" aria-label="Default select example" id="myInput4">
+                        <option value="">Filter by Type</option>
+                        <option value="AST">AST</option>
+                        <option value="BCS NEW">BCS NEW</option>
+                        <option value="BCS RNEW">BCS RNEW</option>
+                    </select>
+                    <select class="form-select" aria-label="Default select example" id="myInput5">
+                        <option value="">Filter by Service Manager</option>
+                        <option value="almazzar">almazzar</option>
+                        <option value="dgrisoli">dgrisoli</option>
+                        <option value="maferna2">maferna2</option>
+                        <option value="masepulv">masepulv</option>
+                        <option value="racorone">racorone</option>
+                    </select>
+                </form>
+                <br>
+                <div class="col-12">
+                    <a class="btn btn-success" href="{{ url_for('exportar_excel') }}" target="_blank">Export to Excel</a>
+                </div>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="excel_file">
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </form>
+                <div class="row mt-2">
+                    <div class="col-auto">
+                        <select id="entriesPerPage" class="form-select form-select-sm" aria-label="Select Entries Per Page">
+                            <option value="10" {% if page_size==10 %} selected {% endif %}>10</option>
+                            <option value="20" {% if page_size==20 %} selected {% endif %}>20</option>
+                            <option value="30" {% if page_size==30 %} selected {% endif %}>30</option>
+                            <option value="50" {% if page_size==50 %} selected {% endif %}>50</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">Area</th>
+                            <th scope="col">Prob</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Did Server</th>
+                            <th scope="col">Service Manager</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Project Name</th>
+                            <th scope="col">Book Date 2</th>
+                            <th scope="col">Book Period</th>
+                            <th scope="col">BCS Months</th>
+                            <th scope="col">TCV '00</th>
+                            <th scope="col">REV FY22Q3</th>
+                            <th scope="col">REV FY22Q4</th>
+                            <th scope="col">Columna1</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        {% for pipeline in pipeline_list %}
+                        <tr>
+                            <td>{{ pipeline.area }}</td>
+                            <td>{{ pipeline.prob }}</td>
+                            <td>{{ pipeline.type }}</td>
+                            <td>{{ pipeline.did_serv }}</td>
+                            <td>{{ pipeline.sm }}</td>
+                            <td>{{ pipeline.customer }}</td>
+                            <td>{{ pipeline.project_name }}</td>
+                            <td>{{ pipeline.book_date2 }}</td>
+                            <td>{{ pipeline.book_period }}</td>
+                            <td>{{ pipeline.bcs_months }}</td>
+                            <td>{{ pipeline.tcv_00 }}</td>
+                            <td>{{ pipeline.rev_fy22q3 }}</td>
+                            <td>{{ pipeline.rev_fy22q4 }}</td>
+                            <td>{{ pipeline.columna1 }}</td>
+                            <td>
+                                <a href="{{ url_for('detail_page', data_object={
+                                            'area': pipeline.area,
+                                            'prob': pipeline.prob,
+                                            'type': pipeline.type,
+                                            'did_serv': pipeline.did_serv,
+                                            'sm': pipeline.sm,
+                                            'customer': pipeline.customer,
+                                            'project_name': pipeline.project_name,
+                                            'book_date2': pipeline.book_date2,
+                                            'book_period': pipeline.book_period,
+                                            'bcs_months': pipeline.bcs_months,
+                                            'tcv_00': pipeline.tcv_00,
+                                            'rev_fy22q3': pipeline.rev_fy22q3,
+                                            'rev_fy22q4': pipeline.rev_fy22q4,
+                                            'columna1': pipeline.columna1
+                                        } | tojson,  data_id=pipeline._id) }}" class="btn btn-danger btn-sm">Edit</a>
+                                <a href="{{ url_for('delete', data_id=pipeline._id) }}"
+                                    class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('get_items', page_number_param=page-1, page_size_number_param=page_size) }}">Previous</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">{{page}} <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('get_items', page_number_param=page+1, page_size_number_param=page_size) }}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="col-12">
+        <a href="{{ url_for('home') }}" class="btn btn-primary">Go back</a>
+    </div>
+    <script>
+        document.getElementById('entriesPerPage').addEventListener('change', function () {
+            var entriesPerPage = this.value; // Obtener el valor seleccionado
+            console.log("Entro listener ", entriesPerPage)
+            // Enviar el valor seleccionado al servidor Flask utilizando AJAX
+            $.ajax({
+                type: 'GET',
+                url: `/items/${1}/${entriesPerPage}`, // Endpoint para la paginación con el número de página 1
+                success: function (response) {
+                    // Manejar la respuesta si es necesario
+                    console.log(response);
+                    // Recargar la página para aplicar los cambios en la paginación
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Manejar errores si es necesario
+                    console.error(error);
+                }
+            });
+        });
+
+    $(document).ready(function () {
+        // Función para filtrar la tabla
+        $('#myInput').on('keyup', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('#myTable tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+            });
+        });
+
+        // Función para filtrar la tabla por los selectores de filtro
+        $('#filtro select').change(function () {
+            var areaFilter = $('#myInput2').val().toUpperCase();
+            var probFilter = $('#myInput3').val().toUpperCase();
+            var typeFilter = $('#myInput4').val().toUpperCase();
+            var smFilter = $('#myInput5').val().toUpperCase();
+
+            $('#myTable tr').filter(function () {
+                var area = $(this).find('td:eq(0)').text().toUpperCase();
+                var prob = $(this).find('td:eq(1)').text().toUpperCase();
+                var type = $(this).find('td:eq(2)').text().toUpperCase();
+                var sm = $(this).find('td:eq(4)').text().toUpperCase();
+
+                var areaMatch = areaFilter === '' || area === areaFilter;
+                var probMatch = probFilter === '' || prob === probFilter;
+                var typeMatch = typeFilter === '' || type === typeFilter;
+                var smMatch = smFilter === '' || sm === smFilter;
+
+                $(this).toggle(areaMatch && probMatch && typeMatch && smMatch);
+            });
+        });
+
+        // Aplicar filtros iniciales al cargar la página
+        $('#filtro select').trigger('change');
+    });
+    </script>
+
+</body>
+</html>

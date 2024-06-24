@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function habilitarCampos() {
+            var inputs = document.querySelectorAll('input, select');
+            inputs.forEach(function (input) {
+                input.removeAttribute('disabled');
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="col mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center">DATA DETAIL</h5>
+                </div>
+                <div class="card-body">
+                    <form id="myForm" action="{{ url_for('save_data',data_id=id )}}" method="POST" onsubmit="return validateForm()" class="row g-3">
+                        <div class="col-md-4 mb-3">
+                            <label for="area" class="form-label">Area</label>
+                            <select class="form-control" id="area" name="area" required disabled>
+                                <option value="">Select...</option>
+                                <option value="MCR" {% if pipeline.area=="MCR" %} selected {% endif %}>MCR</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="prob" class="form-label">Prob</label>
+                            <select class="form-control" id="prob" name="prob" required disabled>
+                                <option value="">Select...</option>
+                                <option value="BOOKED" {% if pipeline.prob=="BOOKED" %} selected {% endif %}>BOOKED
+                                </option>
+                                <option value="CANCEL" {% if pipeline.prob=="CANCEL" %} selected {% endif %}>CANCEL
+                                </option>
+                                <option value="HIGH" {% if pipeline.prob=="HIGH" %} selected {% endif %}>HIGH</option>
+                                <option value="LOST" {% if pipeline.prob=="LOST" %} selected {% endif %}>LOST</option>
+                                <option value="MID" {% if pipeline.prob=="MID" %} selected {% endif %}>MID</option>
+                                <option value="LOW" {% if pipeline.prob=="LOW" %} selected {% endif %}>LOW</option>
+                                <option value="SAFE" {% if pipeline.prob=="SAFE" %} selected {% endif %}>SAFE</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-control" id="type" name="type" required disabled>
+                                <option value="">Select...</option>
+                                <option value="AST" {% if pipeline.type=="AST" %} selected {% endif %}>AST</option>
+                                <option value="BCS NEW" {% if pipeline.type=="BCS NEW" %} selected {% endif %}>BCS NEW
+                                </option>
+                                <option value="BCS RNEW" {% if pipeline.type=="BCS RNEW" %} selected {% endif %}>BCS
+                                    RNEW</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="did_serv" class="form-label">Did Serv (Numeric value only)</label>
+                            <input type="number" pattern="\d+" class="form-control" id="did_serv" name="did_serv"
+                                value="{{ pipeline.did_serv }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="sm" class="form-label">Service Manager {{pipeline.sm}}</label>
+                            <select class="form-control" id="sm" name="sm" required disabled>
+                                <option value="">Select...</option>
+                                {% for sm in sm_list %}
+                                <option value="{{sm.name}}" {% if pipeline.sm==sm.name %} selected {% endif %}>
+                                    {{sm.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer" class="form-label">Customer</label>
+                            <input type="text" class="form-control" id="customer" name="customer"
+                                value="{{ pipeline.customer }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="proyect_name" class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="project_name" name="project_name"
+                                value="{{ pipeline.project_name }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="book_date2" class="form-label">Book Date</label>
+                            <input type="date" class="form-control" id="book_date2" name="book_date2"
+                                value="{{ pipeline.book_date2 }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="book_period" class="form-label">Book Period</label>
+                            <input class="form-control" id="book_period" name="book_period"
+                                value="{{ pipeline.book_period }}" required disabled>
+
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="bcs_months" class="form-label">BCS Months</label>
+                            <input type="date" class="form-control" id="bcs_months" name="bcs_months"
+                                value="{{ pipeline.bcs_months }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tcv_00" class="form-label">TCV (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="tcv_00" name="tcv_00"
+                                value="{{ pipeline.tcv_00 }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="rev_fy22q3" class="form-label">REV FY22Q3 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="rev_fy22q3" name="rev_fy22q3"
+                                value="{{ pipeline.rev_fy22q3 }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="rev_fy22q4" class="form-label">REV FY22Q4 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="rev_fy22q4" name="rev_fy22q4"
+                                value="{{ pipeline.rev_fy22q4 }}" required disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="columna1" class="form-label">Columna1 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="columna1" name="columna1"
+                                value="{{ pipeline.columna1 }}" required disabled>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end mb-3">
+                            <!-- Nuevo botón "Edit" -->
+                            <button class="btn btn-primary me-3" type="button" onclick="habilitarCampos()">Edit</button>
+                            <!-- Botón "Save" movido hacia la derecha -->
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        function validateForm() {
+            var areaValue = document.getElementById('area').value;
+            var probValue = document.getElementById('prob').value;
+            var didServValue = document.getElementById('did_serv').value;
+            var tcvValue = document.getElementById('tcv_00').value;
+            var revFY22Q3Value = document.getElementById('rev_fy22q3').value;
+            var revFY22Q4Value = document.getElementById('rev_fy22q4').value;
+            var columna1Value = document.getElementById('columna1').value;
+            var bcsMonthsValue = document.getElementById('bcs_months').value;
+            var bookDate2Value = document.getElementById('book_date2').value;
+
+            if (areaValue === '' || probValue === '' || didServValue === '' || tcvValue === '' || revFY22Q3Value === '' || revFY22Q4Value === '' || columna1Value === '') {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return false;
+            }
+
+            // Validar que did_serv, tcv_00, rev_fy22q3, rev_fy22q4, columna1 sean números
+            if (!/^\d+$/.test(didServValue) || !/^\d+$/.test(tcvValue) || !/^\d+$/.test(revFY22Q3Value) || !/^\d+$/.test(revFY22Q4Value) || !/^\d+$/.test(columna1Value)) {
+                alert('Por favor, ingresa solo números en los campos correspondientes.');
+                return false;
+            }
+
+            // Validar que bcsMonthsValue sea una fecha válida
+            if (!isValidDate(bcsMonthsValue) || !isValidDate(bookDate2Value)) {
+                alert('Por favor, selecciona fechas válidas para BCS Months y Book Date 2.');
+                return false;
+            }
+
+            return true;
+        }
+        // Función para obtener el año fiscal y trimestre
+        function getFiscalYearAndQuarter(date) {
+            const fechaActual = date;
+            const opciones = { month: 'long' }; // Puedes personalizar las opciones según tus preferencias
+            const mesActual = fechaActual.toLocaleString('es-ES', opciones);
+            console.log("mes nuevo ", mesActual);
+            var qyear = ['agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+            var q1 = ['agosto', 'septiembre', 'octubre']
+            var q2 = ['noviembre', 'diciembre', 'enero']
+            var q3 = ['febrero', 'marzo', 'abril']
+            var q4 = ['mayo', 'junio', 'julio']
+
+            // Obtener el año y el mes de la fecha seleccionada
+            var year = date.getFullYear();
+            var month = date.getMonth(); // Los meses son indexados desde 0
+            console.log(year)
+            console.log(month)
+            // Ajustar el inicio del año fiscal a agosto (mes 8)
+            //var fiscalYear = (month >= 8) ? year + 1 : year;
+            var fiscalYear = qyear.includes(mesActual) ? year + 1 : year;
+            console.log(fiscalYear)
+            // Determinar el trimestre
+            if (q1.includes(mesActual)) {
+                quarter = "Q1";
+            } else if (q2.includes(mesActual)) {
+                quarter = "Q2";
+            } else if (q3.includes(mesActual)) {
+                quarter = "Q3";
+            } else if (q4.includes(mesActual)) {
+                quarter = "Q4";
+            }
+
+            // Retornar el año fiscal y trimestre en el formato deseado
+            return "FY" + fiscalYear + quarter;
+        }
+
+        // Función para actualizar automáticamente el campo "Book Period"
+        function updateBookPeriod() {
+            // Obtener la fecha del campo "Book Date"
+            var bookDateValue = document.getElementById('book_date2').value;
+
+            if (bookDateValue !== '') {
+                // Crear un objeto de fecha
+                var bookDate = new Date(bookDateValue);
+
+                // Obtener el año fiscal y trimestre
+                var fiscalYearAndQuarter = getFiscalYearAndQuarter(bookDate);
+
+                // Actualizar el campo "Book Period"
+                document.getElementById('book_period').value = fiscalYearAndQuarter;
+            }
+        }
+
+        // Asignar la función updateBookPeriod al evento change del campo "Book Date"
+        document.getElementById('book_date2').addEventListener('change', updateBookPeriod);
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

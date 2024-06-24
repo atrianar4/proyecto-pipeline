@@ -1,193 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
+
 <body>
     <div class="container-fluid">
-        <h1 class="text-center mt-5 mb-5">PROYECTO_PIPELINE</h1>
+        <h1 class="text-center mt-5 mb-5">PROJECT_PIPELINE</h1>
     </div>
 
     <div class="container-fluid d-flex justify-content-center">
         <div class="col mb-3">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="text-center">Datos para almacenar</h5>
+                    <h5 class="text-center">DATA TO BE SAVED</h5>
                 </div>
-                <div class="card-body"> 
-                    <form id="myForm" action="/products" method="POST" onsubmit="return validateForm()" class="row g-3">
-                            <div class="col-md-4 mb-3">
-                                <label for="area" class="form-label">Area</label>
-                                <select class="form-control" id="area" name="area" required>
-                                    <option value="">Seleccionar...</option>
-                                    <option value="MCR">MCR</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="prob" class="form-label">Prob</label>
-                                <select class="form-control" id="prob" name="prob" required>
-                                    <option value="">Seleccionar...</option>
-                                    <option value="BOOKED">BOOKED</option>
-                                    <option value="CANCEL">CANCEL</option>
-                                    <option value="HIGH">HIGH</option>
-                                    <option value="LOST">LOST</option>
-                                    <option value="MID">MID</option>
-                                    <option value="LOW">LOW</option>
-                                    <option value="SAFE">SAFE</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="type" class="form-label">Type</label>
-                                <select class="form-control" id="type" name="type" required>
-                                    <option value="">Seleccionar...</option>
-                                    <option value="AST">AST</option>
-                                    <option value="BCS NEW">BCS NEW</option>
-                                    <option value="BCS RNEW">BCS RNEW</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="did_serv" class="form-label">Did Serv (Unicamente valor numerico)</label>
-                                <input type="number" pattern="\d+" class="form-control" id="did_serv" name="did_serv" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="sm" class="form-label">SM</label>
-                                <select class="form-control" id="sm" name="sm">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="almazzar">almazzar</option>
+                <div class="card-body">
+                    <form id="myForm" action="/data" method="POST" onsubmit="return validateForm()" class="row g-3">
+                        <div class="col-md-4 mb-3">
+                            <label for="area" class="form-label">Area</label>
+                            <select class="form-control" id="area" name="area" required>
+                                <option value="">Select...</option>
+                                <option value="MCR">MCR</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="prob" class="form-label">Prob</label>
+                            <select class="form-control" id="prob" name="prob" required>
+                                <option value="">Select...</option>
+                                <option value="BOOKED">BOOKED</option>
+                                <option value="CANCEL">CANCEL</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="LOST">LOST</option>
+                                <option value="MID">MID</option>
+                                <option value="LOW">LOW</option>
+                                <option value="SAFE">SAFE</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="">Select...</option>
+                                <option value="AST">AST</option>
+                                <option value="BCS NEW">BCS NEW</option>
+                                <option value="BCS RNEW">BCS RNEW</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="did_serv" class="form-label">Did Serv (Numeric value only)</label>
+                            <input type="number" pattern="\d+" class="form-control" id="did_serv" name="did_serv"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="sm" class="form-label">Service Manager</label>
+                            <select class="form-control" id="sm" name="sm">
+                                <option value="">Select...</option>
+                                {% for sm in sm_list %}
+                                <option value="{{sm.name}}">{{sm.name}}</option>
+                                {% endfor %}
+                                <!-- <option value="almazzar">almazzar</option>
                                     <option value="dgrisoli">dgrisoli</option>
                                     <option value="maferna2">maferna2</option>
                                     <option value="masepulv">masepulv</option>
-                                    <option value="racorone">racorone</option>  
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="hw_impact" class="form-label">Hw Impact</label>
-                                <input type="text" class="form-control" id="hw_impact" name="hw_impact">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="customer" class="form-label">Customer</label>
-                                <input type="text" class="form-control" id="customer" name="customer">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="proyect_name" class="form-label">Proyect Name</label>
-                                <input type="text" class="form-control" id="proyect_name" name="proyect_name">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="book_date2" class="form-label">Book Date 2</label>
-                                <input type="text" class="form-control" id="book_date2" name="book_date2">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="book_period" class="form-label">Book Period</label>
-                                <select class="form-control" id="book_period" name="book_period">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="FY24Q4">FY24Q4</option>
-                                    <option value="FY24Q3">FY24Q3</option>
-                                    <option value="FY24Q2">FY24Q2</option>
-                                    <option value="FY24Q1">FY24Q1</option>
-                                    <option value="FY23Q4">FY23Q4</option>
-                                    <option value="FY23Q3">FY23Q3</option>
-                                    <option value="FY23Q2">FY23Q2</option>
-                                    <option value="FY23Q1">FY23Q1</option>
-                                    <option value="FY22Q4">FY22Q4</option>
-                                    <option value="FY22Q3">FY22Q3</option>
-                                    <option value="FY22Q2">FY22Q2</option>
-                                    <option value="FY22Q1">FY22Q1</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="bcs_months" class="form-label">BCS Months</label>
-                                <input type="text" pattern="\d{2}" class="form-control" id="bcs_months" name="bcs_months" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="tcv_00" class="form-label">TCV '00 (Unicamente valor numerico)</label>
-                                <input type="text" pattern="\d+" class="form-control" id="tcv_00" name="tcv_00" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="rev_fy22q3" class="form-label">REV FY22Q3 (Unicamente valor numerico)</label>
-                                <input type="text" pattern="\d+" class="form-control" id="rev_fy22q3" name="rev_fy22q3" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="rev_fy22q4" class="form-label">REV FY22Q4 (Unicamente valor numerico)</label>
-                                <input type="text" pattern="\d+" class="form-control" id="rev_fy22q4" name="rev_fy22q4" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="columna1" class="form-label">Column a1 (Unicamente valor numerico)</label>
-                                <input type="text" pattern="\d+" class="form-control" id="columna1" name="columna1" required>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary" type="submit">Guardar</button>
-                            </div>
-                        </form>
-                    </div>
+                                    <option value="racorone">racorone</option> -->
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="customer" class="form-label">Customer</label>
+                            <input type="text" class="form-control" id="customer" name="customer">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="proyect_name" class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="project_name" name="project_name">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="book_date2" class="form-label">Book Date</label>
+                            <input type="date" class="form-control" id="book_date2" name="book_date2">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="book_period" class="form-label">Book Period</label>
+                            <input class="form-control" id="book_period" name="book_period">
+
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="bcs_months" class="form-label">BCS Months</label>
+                            <input type="date" class="form-control" id="bcs_months" name="bcs_months" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tcv_00" class="form-label">TCV (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="tcv_00" name="tcv_00" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="rev_fy22q3" class="form-label">REV FY22Q3 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="rev_fy22q3" name="rev_fy22q3"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="rev_fy22q4" class="form-label">REV FY22Q4 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="rev_fy22q4" name="rev_fy22q4"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="columna1" class="form-label">Columna1 (Numeric value only)</label>
+                            <input type="text" pattern="\d+" class="form-control" id="columna1" name="columna1"
+                                required>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                        <div class="col-12">
+                            <a href="{{ url_for('table_page') }}" class="btn btn-primary">See table</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
-    <div class="container-fluid">
-        <div class="card mt-3">
-            <div class="card-header">
-                <h5 class="text-center">Datos almacenados</h5>
-            </div>
-            <div class="card-body table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Area</th>
-                            <th scope="col">Prob</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Did Server</th>
-                                <th scope="col">SM</th>
-                                <th scope="col">Hw Impact</th>
-                                <th scope="col">Customer</th>
-                                <th scope="col">Proyect Name</th>
-                                <th scope="col">Book Date 2</th>
-                                <th scope="col">Book Period</th>
-                                <th scope="col">BCS Months</th>
-                                <th scope="col">TCV '00</th>
-                                <th scope="col">REV FY22Q3</th>
-                                <th scope="col">REV FY22Q4</th>
-                                <th scope="col">Column a1</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                            <tr>
-                                <td>{{ product.area }}</td>
-                                <td>{{ product.prob }}</td>
-                                    <td>{{ product.type }}</td>
-                                    <td>{{ product.did_serv }}</td>
-                                    <td>{{ product.sm }}</td>
-                                    <td>{{ product.hw_impact }}</td>
-                                    <td>{{ product.customer }}</td>
-                                    <td>{{ product.proyect_name }}</td>
-                                    <td>{{ product.book_date2 }}</td>
-                                    <td>{{ product.book_period }}</td>
-                                    <td>{{ product.bcs_months }}</td>
-                                    <td>{{ product.tcv_00 }}</td>
-                                    <td>{{ product.rev_fy22q3 }}</td>
-                                    <td>{{ product.rev_fy22q4 }}</td>
-                                    <td>{{ product.columna1 }}</td>
-                                    <td>
-                                        <form action="/edit/{{ product.area }}" method="POST">
-                                            <!-- Campos ocultos con valores actuales -->
-                                            <!-- ... (resto de los campos ocultos) ... -->
-                                            <button class="btn btn-primary btn-sm" type="submit">Editar</button>
-                                        </form>
-                                        <a href="{{ url_for('delete', product_name=product.area) }}" class="btn btn-danger btn-sm">Eliminar</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div> 
-            </div>
-        </div>
-        <script>
-            function validateForm() {
+    
+    <script>
+        function validateForm() {
             var areaValue = document.getElementById('area').value;
             var probValue = document.getElementById('prob').value;
             var didServValue = document.getElementById('did_serv').value;
@@ -195,20 +133,92 @@
             var revFY22Q3Value = document.getElementById('rev_fy22q3').value;
             var revFY22Q4Value = document.getElementById('rev_fy22q4').value;
             var columna1Value = document.getElementById('columna1').value;
-            var bcsMonthsValue = document.getElementById('bcs_months').value; 
-            if (areaValue === '' || probValue === '' || didServValue === '' || tcvValue === '' || revFY22Q3Value === '' || revFY22Q4Value === '' || columna1Value === '' || bcsMonthsValue === '') {
+            var bcsMonthsValue = document.getElementById('bcs_months').value;
+            var bookDate2Value = document.getElementById('book_date2').value;
+
+            if (areaValue === '' || probValue === '' || didServValue === '' || tcvValue === '' || revFY22Q3Value === '' || revFY22Q4Value === '' || columna1Value === '') {
                 alert('Por favor, completa todos los campos obligatorios.');
                 return false;
             }
 
-            // Validar que did_serv, tcv_00, rev_fy22q3, rev_fy22q4, columna1, bcs_months sean números
-            if (!/^\d+$/.test(didServValue) || !/^\d+$/.test(tcvValue) || !/^\d+$/.test(revFY22Q3Value) || !/^\d+$/.test(revFY22Q4Value) || !/^\d+$/.test(columna1Value) || !/^\d+$/.test(bcsMonthsValue)) {
+            // Validar que did_serv, tcv_00, rev_fy22q3, rev_fy22q4, columna1 sean números
+            if (!/^\d+$/.test(didServValue) || !/^\d+$/.test(tcvValue) || !/^\d+$/.test(revFY22Q3Value) || !/^\d+$/.test(revFY22Q4Value) || !/^\d+$/.test(columna1Value)) {
                 alert('Por favor, ingresa solo números en los campos correspondientes.');
+                return false;
+            }
+
+            // Validar que bcsMonthsValue sea una fecha válida
+            if (!isValidDate(bcsMonthsValue) || !isValidDate(bookDate2Value)) {
+                alert('Por favor, selecciona fechas válidas para BCS Months y Book Date 2.');
                 return false;
             }
 
             return true;
         }
+        // Función para obtener el año fiscal y trimestre
+        function getFiscalYearAndQuarter(date) {
+            const fechaActual = date;
+            const opciones = { month: 'long' }; // Puedes personalizar las opciones según tus preferencias
+            const mesActual = fechaActual.toLocaleString('es-ES', opciones);
+            console.log("mes nuevo ", mesActual);
+            var qyear = ['agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+            var q1 = ['agosto', 'septiembre', 'octubre']
+            var q2 = ['noviembre', 'diciembre', 'enero']
+            var q3 = ['febrero', 'marzo', 'abril']
+            var q4 = ['mayo', 'junio', 'julio']
+
+            // Obtener el año y el mes de la fecha seleccionada
+            var year = date.getFullYear();
+            var month = date.getMonth(); // Los meses son indexados desde 0
+            console.log(year)
+            console.log(month)
+            // Ajustar el inicio del año fiscal a agosto (mes 8)
+            //var fiscalYear = (month >= 8) ? year + 1 : year;
+            var fiscalYear = qyear.includes(mesActual) ? year + 1 : year;
+            console.log(fiscalYear)
+            // Determinar el trimestre
+            if (q1.includes(mesActual)) {
+                quarter = "Q1";
+            } else if (q2.includes(mesActual)) {
+                quarter = "Q2";
+            } else if (q3.includes(mesActual)) {
+                quarter = "Q3";
+            } else if (q4.includes(mesActual)) {
+                quarter = "Q4";
+            }
+
+            // Retornar el año fiscal y trimestre en el formato deseado
+            return "FY" + fiscalYear + quarter;
+        }
+
+        // Función para actualizar automáticamente el campo "Book Period"
+        function updateBookPeriod() {
+            // Obtener la fecha del campo "Book Date"
+            var bookDateValue = document.getElementById('book_date2').value;
+
+            if (bookDateValue !== '') {
+                // Crear un objeto de fecha
+                var bookDate = new Date(bookDateValue);
+
+                // Obtener el año fiscal y trimestre
+                var fiscalYearAndQuarter = getFiscalYearAndQuarter(bookDate);
+
+                // Actualizar el campo "Book Period"
+                document.getElementById('book_period').value = fiscalYearAndQuarter;
+            }
+        }
+
+        // Asignar la función updateBookPeriod al evento change del campo "Book Date"
+        document.getElementById('book_date2').addEventListener('change', updateBookPeriod);
+        // $(document).ready(function () {
+        //     $("#myInput").on("keyup", function () {
+        //         // var value = $(this).val().toLowerCase();
+        //         // $("#myTable tr").filter(function () {
+        //         //     // $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        //         // });
+        //     });
+        // });
     </script>
 </body>
+
 </html>
