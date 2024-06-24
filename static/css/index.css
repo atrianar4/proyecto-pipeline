@@ -1,0 +1,88 @@
+/* index.css */
+
+/* Estilos generales */
+body {
+    font-family: 'Poppins', Arial, sans-serif; /* Fuente creativa */
+    background-color: #f8f9fa; /* Fondo claro */
+    color: #495057; /* Color de texto principal */
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 20px;
+    background-color: #005073; /* Fondo azul oscuro */
+    color: #fff; /* Color de texto blanco */
+    text-align: center;
+}
+
+.container-fluid h1 {
+    font-size: 2.5rem; /* Tamaño de fuente grande */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Estilos de tarjeta */
+.card {
+    border: none; /* Sin borde */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el ratón */
+}
+
+.card-header {
+    background-color: #3e4551; /* Fondo azul oscuro */
+    color: #fff; /* Color de texto blanco */
+    border-bottom: none; /* Sin borde inferior en el encabezado */
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Estilos de formulario */
+.form-label {
+    font-weight: bold; /* Texto de etiqueta en negrita */
+    color: #3e4551; /* Color de etiqueta azul oscuro */
+}
+
+.form-control {
+    border: 1px solid #ced4da; /* Borde ligero */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #3e4551; /* Color de borde al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(62, 69, 81, 0.25); /* Sombra al enfocar */
+}
+
+/* Estilos de botón */
+.btn-primary {
+    background-color: #3e4551; /* Fondo azul oscuro */
+    border-color: #3e4551; /* Borde azul oscuro */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño de fuente */
+    text-transform: uppercase; /* Texto en mayúsculas */
+}
+
+.btn-primary:hover {
+    background-color: #1c1f24; /* Fondo más oscuro al pasar el ratón */
+    border-color: #1c1f24; /* Borde más oscuro al pasar el ratón */
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+    .container-fluid h1 {
+        font-size: 2rem; /* Reducir tamaño de fuente para dispositivos pequeños */
+    }
+
+    .btn-primary {
+        font-size: 0.9rem; /* Reducir tamaño de fuente para dispositivos pequeños */
+    }
+}

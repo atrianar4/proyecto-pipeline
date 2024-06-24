@@ -1,14 +1,21 @@
 import os
-from flask import Flask, render_template, request, jsonify, redirect, send_from_directory, url_for, send_file
+from flask import Flask, render_template, request, jsonify, redirect, send_from_directory, url_for, send_file, make_response
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired
-import app.database as dbase
+import database as dbase
 from bson import ObjectId
-from app.mcr_pipeline import McrPipeline
-from app.sm import Sm
+from mcr_pipeline import McrPipeline
+from sm import Sm
 import random
 import pandas as pd
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib import colors
+from reportlab.pdfgen import canvas
+from io import BytesIO
+
+
+
 db = dbase.dbConnection()
 mcr_pipeline_list = []
 page_persist = 1
@@ -100,21 +107,100 @@ def addMcrPipeline():
     
 @app.route('/exportar_excel')
 def exportar_excel():
-    data = db['data']
+    area = request.args.get('area', '')
+    prob = request.args.get('prob', '')
+    type = request.args.get('type', '')
+    sm = request.args.get('sm', '')
 
-    # Obtener todos los documentos de la base de datos
-    todos_los_documentos = list(data.find())
+    query = {}
+    if area:
+        query['area'] = area
+    if prob:
+        query['prob'] = prob
+    if type:
+        query['type'] = type
+    if sm:
+        query['sm'] = sm
 
-    # Crear un DataFrame de Pandas con los datos
+    todos_los_documentos = list(data.find(query))
+
     df = pd.DataFrame(todos_los_documentos)
 
-    # Guardar el DataFrame en un archivo Excel temporal
     nombre_archivo = 'exportacion_base_datos.xlsx'
     ruta_archivo = os.path.join(os.getcwd(), nombre_archivo)
     df.to_excel(ruta_archivo, index=False)
 
-    # Enviar el archivo al usuario para su descarga
     return send_from_directory(os.getcwd(), nombre_archivo, as_attachment=True)
+
+@app.route('/exportar_pdf')
+def exportar_pdf():
+    # Parámetros de consulta
+    area = request.args.get('area', '')
+    prob = request.args.get('prob', '')
+    type = request.args.get('type', '')
+    sm = request.args.get('sm', '')
+
+    query = {}
+    if area:
+        query['area'] = area
+    if prob:
+        query['prob'] = prob
+    if type:
+        query['type'] = type
+    if sm:
+        query['sm'] = sm
+
+    todos_los_documentos = list(data.find(query))
+
+    df = pd.DataFrame(todos_los_documentos)
+
+    buffer = BytesIO()
+    # Crear un lienzo (canvas) PDF utilizando ReportLab
+    c = canvas.Canvas(buffer, pagesize=letter)
+
+     # Colores y estilos de Cisco
+    cisco_blue = colors.HexColor("#005073")
+    cisco_gray = colors.HexColor("#4D4F53")
+    cisco_white = colors.HexColor("#FFFFFF")
+
+     # Configurar el tamaño de fuente y otros estilos
+    c.setFont("Helvetica-Bold", 12)
+    c.setFillColor(cisco_blue)
+    c.drawString(50, 750, "Reporte de Datos - Cisco")
+
+
+    # Ajustar márgenes y espacio para escribir
+    margen_izquierdo = 50
+    margen_derecho = letter[0] - 50
+    y_inicial = 710
+
+    # Convertir DataFrame a formato de tabla
+    data_as_table = df.to_string(index=False)
+    lineas = data_as_table.split('\n')
+    espacio_entre_lineas = 15
+
+    # Escribir cada línea en el lienzo PDF
+    for idx, linea in enumerate(lineas):
+        y_pos = y_inicial - (idx * espacio_entre_lineas)
+        c.setFillColor(cisco_gray if idx % 2 == 0 else cisco_white)
+        c.setFont("Helvetica", 8)
+        c.drawString(margen_izquierdo, y_pos, linea)
+
+         # Si alcanza el borde inferior de la página, añadir nueva página
+        if y_pos <= 50:
+            c.showPage()
+            c.setFont("Helvetica", 8)  # Reajustar tamaño de fuente para nueva página
+            y_inicial = 750 # Resetear posición inicial para nueva página
+
+    # Finalizar el lienzo PDF
+    c.showPage()
+    c.save()
+
+     # Obtener los datos del buffer y enviar el archivo al usuario para su descarga
+    buffer.seek(0) # Asegurar que el buffer esté al inicio
+    return send_file(buffer, as_attachment=True, download_name='exportacion_base_datos.pdf')
+
+
 
 
 @app.route('/upload', methods=['POST'])

@@ -6,7 +6,9 @@
     <title>SAVED</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
 </head>
 
 <body>
@@ -14,7 +16,11 @@
         <div class="card mt-3">
             <div class="card-header">
                 <h5 class="text-center">SAVED DATA</h5>
+                <div class="col-12">
+                    <a href="{{ url_for('home') }}" class="btn btn-primary" id="goBackBtn1">Go back</a>
+                </div>
             </div>
+            
             <div class="card-body table-responsive">
                 <h2>Search</h2>
                 <input class="form-control" id="myInput" type="text" placeholder="Buscar.."><br>
@@ -50,13 +56,27 @@
                     </select>
                 </form>
                 <br>
-                <div class="col-12">
-                    <a class="btn btn-success" href="{{ url_for('exportar_excel') }}" target="_blank">Export to Excel</a>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <a id="exportExcel" class="btn btn-success btn-block" target="_blank">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a id="exportPdf" class="btn btn-success btn-block" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Export to PDF
+                        </a>
+                    </div>
                 </div>
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="excel_file">
-                    <button type="submit" class="btn btn-success">Upload</button>
-                </form>
+                
+                <div> <!-- Este div contiene el formulario -->
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                        <input type="file" name="excel_file">
+                        <button type="submit" class="btn btn-success">Upload</button>
+                    </form>
+                </div>
+                
+                
                 <div class="row mt-2">
                     <div class="col-auto">
                         <select id="entriesPerPage" class="form-select form-select-sm" aria-label="Select Entries Per Page">
@@ -84,6 +104,7 @@
                             <th scope="col">REV FY22Q3</th>
                             <th scope="col">REV FY22Q4</th>
                             <th scope="col">Columna1</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="myTable">
@@ -145,7 +166,7 @@
         </ul>
     </nav>
     <div class="col-12">
-        <a href="{{ url_for('home') }}" class="btn btn-primary">Go back</a>
+        <a href="{{ url_for('home') }}" class="btn btn-primary" id="goBackBtn2">Go back</a>
     </div>
     <script>
         document.getElementById('entriesPerPage').addEventListener('change', function () {
@@ -203,6 +224,25 @@
         $('#filtro select').trigger('change');
     });
     </script>
+
+<script>
+    $(document).ready(function () {
+        function updateExportLinks() {
+            var area = $('#myInput2').val();
+            var prob = $('#myInput3').val();
+            var type = $('#myInput4').val();
+            var sm = $('#myInput5').val();
+
+            $('#exportExcel').attr('href', `/exportar_excel?area=${area}&prob=${prob}&type=${type}&sm=${sm}`);
+            $('#exportPdf').attr('href', `/exportar_pdf?area=${area}&prob=${prob}&type=${type}&sm=${sm}`);
+        }
+
+        // Actualizar enlaces al cambiar los filtros
+        $('#filtro select').change(updateExportLinks);
+        updateExportLinks(); // Actualizar enlaces al cargar la página
+    });
+</script>
+
 
 </body>
 </html>

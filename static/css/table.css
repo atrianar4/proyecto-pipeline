@@ -1,0 +1,212 @@
+/* styles.css */
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 20px;
+    background-color: #005073;
+    color: #fff;
+    text-align: center;
+}
+
+/* Estilo para el h5 con clase text-center */
+h5.text-center {
+    text-align: center; /* Centrar el texto */
+    color: #f0f0f0;; /* Color del texto */
+    font-size: 35px; /* Tamaño de fuente */
+    margin-top: 20px; /* Espacio superior */
+    /* Otros estilos según necesites */
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.card-header {
+    background-color: #005073;
+    color: #fff;
+    border-bottom: none;
+    padding: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    background-color: #005073;
+    border-color: #005073;
+}
+
+.btn-primary:hover {
+    background-color: #003e55;
+    border-color: #003e55;
+}
+
+/* Estilos específicos para los selects */
+.form-select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    
+}
+
+/* Estilos para el contenedor del select */
+.select-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea el contenido a la derecha */
+    margin-top: 10px; /* Ajusta el margen según sea necesario */
+}
+
+/* Estilos para el select */
+#entriesPerPage {
+    border: 1px solid #ccc; /* Borde del select */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 8px; /* Espaciado interno */
+    width: 100px; /* Ancho del select */
+    font-size: 14px; /* Tamaño de fuente */
+    background-color: #fff; /* Color de fondo */
+    color: #333; /* Color de texto */
+}
+
+/* Estilos para el select cuando está enfocado */
+#entriesPerPage:focus {
+    outline: none; /* Eliminar el contorno de enfoque */
+    border-color: #005073; /* Color del borde cuando está enfocado */
+    box-shadow: 0 0 5px rgba(0, 80, 115, 0.5); /* Sombra al enfocarse */
+}
+
+/* Estilos para las opciones del select */
+#entriesPerPage option {
+    background-color: #fff; /* Color de fondo de las opciones */
+    color: #333; /* Color de texto de las opciones */
+}
+
+/* Estilos para las opciones del select al pasar el ratón */
+#entriesPerPage option:hover {
+    background-color: #005073; /* Color de fondo al pasar el ratón */
+    color: #fff; /* Color de texto al pasar el ratón */
+}
+
+
+/* Estilos para la tabla */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.table th,
+.table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #005073;
+    color: #fff;
+}
+
+/* Estilos para los botones de exportar */
+#exportExcel,
+#exportPdf {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Estilos para el formulario de carga de archivos */
+.upload-form {
+    margin-top: 20px;
+}
+
+.upload-form input[type="file"] {
+    margin-right: 10px;
+}
+
+/* Estilos para la paginación */
+.pagination {
+    display: flex; /* Utilizamos flexbox para alinear */
+    justify-content: flex-end; /* Alineamos los elementos a la derecha */
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    color: #005073;
+    padding: 8px 16px; /* Ajustar el padding para los enlaces de paginación */
+    margin: 0 4px; /* Añadir margen entre los enlaces de paginación */
+    border: 1px solid #005073; /* Borde para los enlaces de paginación */
+    text-decoration: none; /* Quitar subrayado */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+}
+
+.pagination .page-link:hover {
+    background-color: #005073;
+    color: #fff;
+}
+
+/* Estilos para el botón "Go back" */
+
+#goBackBtn1 {
+    margin-top: 20px;
+    background-color: #3498db; /* Azul claro */
+    border-color: #3498db; /* Borde azul claro */
+    float: right; /* Alinear a la derecha */
+}
+
+#goBackBtn1:hover {
+    background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
+    border-color: #2980b9; /* Borde azul más oscuro */
+}
+
+/* Estilos para el segundo botón "Go back" */
+#goBackBtn2 {
+    margin-top: 20px;
+    background-color: #3498db; /* Azul claro */
+    border-color: #3498db; /* Borde azul claro */
+    float: right; /* Alinear a la derecha */
+}
+
+#goBackBtn2:hover {
+    background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
+    border-color: #2980b9; /* Borde azul más oscuro */
+}
+
+
+
+
+/* Media query para ajustar estilos en pantallas pequeñas */
+@media (max-width: 768px) {
+    .form-select {
+        margin-right: 0;
+    }
+}
